@@ -2,6 +2,7 @@
   "name": "screencapture-chrome-extension",
   "version": "0.0.1",
   "manifest_version": 2,
+  "description": "Chrome Extension to take a full screen capture and upload it to Amazon S3",
   "browser_action": {
     "default_icon": {
       "19": "icons/19x19.png",
@@ -9,5 +10,6 @@
     },
     "default_title": "Capture Full Screen",
     "default_popup": "popup.html"
-  }
+  },
+  "permissions": [ "activeTab" ]
 }
