@@ -1,15 +1,9 @@
-
 chrome.browserAction.onClicked.addListener((tab) => {
-
-  console.log('tab: %s', tab.id)
-  console.log('url: %s', tab.url)
 
   // create a dummy DOM node to leverage Location methods
   let url = document.createElement('a')
   url.href = tab.url
   let filename = url.hostname
-
-  console.log('filename: %s', filename)
 
 	chrome.tabs.executeScript(tab.id, {file: 'page.js'}, () => {
 
@@ -26,11 +20,25 @@ chrome.browserAction.onClicked.addListener((tab) => {
       screencapture.canvas = canvas
       screencapture.ctx = canvas.getContext('2d')
 
-      console.log('canvas: [%d,%d]', width, height)
+      chrome.tabs.captureVisibleTab(null, {format: 'png'}, (dataURI) => {
 
-      //chrome.tabs.captureVisibleTab(null, {format: 'png'}, (dataURI) => {
-      //console.log(dataURI)
-      //})
+        chrome.tabs.create({url: chrome.extension.getURL('image.html')}, (tab) => {
+
+          // TODO fix this (wait until image.js is loaded)
+          setTimeout(() => {
+            chrome.tabs.sendMessage(tab.id, {data: dataURI, name: filename}, (result) => {
+              //console.log(result)
+            })
+          }, 1000)
+        })
+        //if(dataURI) {
+          //var image = new Image()
+          //image.src = dataURI
+          //image.onload = () => {
+            //screencapture.ctx.drawImage(image, 0, 0)
+          //}
+        //}
+      })
     })
 	})
 })

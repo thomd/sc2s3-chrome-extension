@@ -1,5 +1,3 @@
-console.log('page.js')
-
 let dimension = (d) => [
   document.documentElement['client' + d],
   document.documentElement['scroll' + d],
