@@ -1,13 +1,18 @@
-// page context
+console.log('page.js')
+
+let dimension = (d) => [
+  document.documentElement['client' + d],
+  document.documentElement['scroll' + d],
+  document.documentElement['offset' + d],
+  document.body['scroll' + d],
+  document.body['offset' + d]
+]
+let width = Math.max(...dimension('Width'))
+let height = Math.max(...dimension('Height'))
 
 chrome.runtime.onMessage.addListener((request, sender, callback) => {
-
-  // create a dummy DOM node to leverage Location methods
-  let url = document.createElement('a')
-  url.href = request.url
-
-  console.log(url.hostname)
-
-  // capture screenshot
-
+  if(request == 'dimension') {
+    callback([width, height])
+  }
 })
+
